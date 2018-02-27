@@ -1,0 +1,47 @@
+[
+    {
+        "method": "saveToFile",
+        "params":[ ],
+        "returns": true
+    },
+    {
+        "method": "restoreFromFile",
+        "params":[ ],
+        "returns": true
+    },
+    {   // add(JsonOfAStudent) --> bool
+        "method": "add",
+        "params":[{ }],
+        "returns": true
+    },
+    {   // remove(string) --> bool
+        "method": "remove",
+        "params":["Jean"],
+        "returns": true
+    },
+    {   // get(string) --> jsonOfAStudent
+        "method": "get",
+        "params":["Jean"],
+        "returns":{ }
+    },
+    {   // getNames() --> json array of strings of student names
+        "method": "getNames",
+        "params":[],
+        "returns": [ ]
+    },
+    {   // distanceAndBearing(string, string) --> string
+        "method": "distanceAndBearing",
+        "params":["Jean", "Torres"],
+        "returns": "Irizarry" 
+    },
+    {   // updateWaypoint(string, string, string, string, string) 
+        "method": "updateWaypoint",
+        "params":["1","2","3","4","5"],
+        "returns": true
+    },
+    {   // addNew(string, string, string, string, string) 
+        "method": "addNew",
+        "params":["1","2","3","4","5"],
+        "returns": true
+    }
+]
