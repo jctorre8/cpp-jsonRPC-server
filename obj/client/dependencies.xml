@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <dependencies>
    <includePath signature="/I../../../../usr/local/include /I../../../../usr/include/jsoncpp">
-      <source file="../../src/cpp/client/waypointlibrarystub.h" lastModified="161dab46940">
+      <source file="../../src/cpp/client/waypointlibrarystub.h" lastModified="161dab9eb68">
          <sysinclude file="../../../../../../usr/include/jsonrpccpp/client.h"/>
       </source>
       <source file="../../src/cpp/client/WaypointGUI.cpp" lastModified="161da9705d0">
@@ -15,6 +15,13 @@
          <sysinclude file="../../../../../../usr/include/FL/Fl_Multiline_Input.H"/>
          <sysinclude file="../../../../../../usr/include/stdio.h"/>
          <sysinclude file="../../../../../../usr/include/stdlib.h"/>
+      </source>
+      <source file="../../src/cpp/server/Waypoint.cpp" lastModified="161d81b1cd8">
+         <include file="../../src/cpp/server/Waypoint.hpp"/>
+         <sysinclude file="../../../../../../usr/include/stdlib.h"/>
+      </source>
+      <source file="../../src/cpp/server/Waypoint.hpp" lastModified="161b0e45710">
+         <sysinclude file="../../../../../../usr/include/jsoncpp/json/json.h"/>
       </source>
       <source file="../../src/cpp/server/WaypointLibrary.hpp" lastModified="161da158578">
          <include file="../../src/cpp/server/Waypoint.hpp"/>

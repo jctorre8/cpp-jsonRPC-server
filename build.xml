@@ -139,7 +139,7 @@
    </target>
 
    <target name="build.all"
-           depends="clean,prepare,build.server,build.client,build.java.client"
+           depends="clean,prepare,build.server,build.cpp.client,build.java.client"
            description="Clean then build cpp server, cpp client and java client"/>
 
    <target name="generate.client.stub" depends="prepare">
@@ -151,7 +151,7 @@
       <delete file="waypointlibrarystub.h"/>
    </target>
 
-   <target name="build.client" depends="generate.client.stub">
+   <target name="build.cpp.client" depends="generate.client.stub">
       <cc outtype="executable" subsystem="console"
           outfile="${dist.dir}/waypointRPCClient"
           objdir="${obj.dir}/client">
@@ -199,6 +199,23 @@
             includeantruntime="false">
         <classpath refid="compile.classpath"/>
      </javac>
+   </target>
+
+   <target name="execute.cpp.client" depends="build.cpp.client">
+      <exec executable="./${dist.dir}/waypointRPCClient"/>
+   </target>
+
+   <target name="execute.server" depends="build.server">
+      <exec executable="./${dist.dir}/waypointRPCServer"/>
+   </target>
+
+   <target name="execute.java.client" depends="build.java.client"
+           description="Start program">
+         <echo message="user.dir is: ${user.dir}"/>
+         <echo message="command line execute: java -cp classes:lib/json.jar ser321.assign5.WaypointClient" />
+         <java classname="ser321.assign5.WaypointClient" fork="yes">
+           <classpath refid="compile.classpath"/>
+         </java>
    </target>
 
 </project>
