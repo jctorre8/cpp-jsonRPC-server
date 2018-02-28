@@ -33,8 +33,8 @@
    <target name="targets">
       <echo message="Targets are clean, prepare, build.all, generate.server.stub, build.server, generate.client.stub, build.client, build.java.client, targets"/>
       <echo message="base directory is: ${basedir} and ostype is ${ostype}"/>
-      <echo message="execute cpp server with: ./bin/studentRPCServer ${port.num}"/>
-      <echo message="execute cpp client with: ./bin/studentRPCClient http://${host.name}:${port.num}"/>
+      <echo message="execute cpp server with: ./bin/waypointRPCServer ${port.num}"/>
+      <echo message="execute cpp client with: ./bin/waypointRPCClient http://${host.name}:${port.num}"/>
       <echo message="invoke java http client with: java -cp classes:lib/json.jar sample.student.client.StudentCollectionClient ${host.name} ${port.num}"/>
       
    </target>
@@ -54,9 +54,9 @@
       <delete file="log.txt" failonerror="false"/>
       <delete file="logerrors.txt" failonerror="false"/>
       <delete file="logpid.txt" failonerror="false"/>
-      <delete file="${src.dir}/cpp/server/studentserverstub.h"
+      <delete file="${src.dir}/cpp/server/waypointtserverstub.h"
               failonerror="false"/>
-      <delete file="${src.dir}/cpp/client/studentcollectionstub.h"
+      <delete file="${src.dir}/cpp/client/waypointlibrarystub.h"
               failonerror="false"/>
    </target>
 
@@ -127,7 +127,7 @@
             <property name="cxxflag" value="-std=c++14"/>
             <property name="includepath" value="/usr/local/include:/usr/include/jsoncpp"/>
             <property name="client.lib.path" value="/usr/local/lib"/>
-            <property name="client.lib.list" value="jsoncpp,jsonrpccpp-client,jsonrpccpp-common,microhttpd,stdc++"/>
+            <property name="client.lib.list" value="jsoncpp,jsonrpccpp-client,jsonrpccpp-common,microhttpd,stdc++,fltk,m"/>
             <property name="server.lib.path" value="/usr/local/lib"/>
             <property name="server.lib.list" value="jsoncpp,jsonrpccpp-server,jsonrpccpp-common,microhttpd,stdc++,m"/>
          </then>
@@ -144,24 +144,24 @@
 
    <target name="generate.client.stub" depends="prepare">
       <exec dir="${basedir}" executable="jsonrpcstub">
-         <arg line="${json.file.name} --cpp-client=studentcollectionstub"/>
+         <arg line="${json.file.name} --cpp-client=waypointlibrarystub"/>
       </exec>
-      <copy file="studentcollectionstub.h"
-            tofile="${src.dir}/cpp/client/studentcollectionstub.h"/>
-      <delete file="studentcollectionstub.h"/>
+      <copy file="waypointlibrarystub.h"
+            tofile="${src.dir}/cpp/client/waypointlibrarystub.h"/>
+      <delete file="waypointlibrarystub.h"/>
    </target>
 
    <target name="build.client" depends="generate.client.stub">
       <cc outtype="executable" subsystem="console"
-          outfile="${dist.dir}/studentRPCClient"
+          outfile="${dist.dir}/waypointRPCClient"
           objdir="${obj.dir}/client">
          <compilerarg value="${cxxflag}"/>
          <includepath>
             <pathelement path="${includepath}"/>
          </includepath>
          <libset dir="${client.lib.path}" libs="${client.lib.list}"/>
-         <fileset dir="${src.dir}/cpp/client" includes="StudentTerminalClient.cpp"/>
-         <fileset dir="${src.dir}/cpp/server" includes="Waypoint.cpp"/>
+         <fileset dir="${src.dir}/cpp/client" includes="WaypointClient.cpp"/>
+         <fileset dir="${src.dir}/cpp/server" includes="Waypoint.cpp,WaypointLibrary.hpp"/>
       </cc>
    </target>
 

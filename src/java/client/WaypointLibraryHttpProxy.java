@@ -189,7 +189,7 @@ public class WaypointLibraryHttpProxy  extends Object implements JSONString, Ser
             jobj.put("params",params);
             String request = jobj.toString();
             String response = this.call(request);
-            debug("getNames returned: "+response);
+            debug("restoreFromFile returned: "+response);
             JSONObject respObj = new JSONObject(response);
             if(!respObj.has("error")){
                 ret = respObj.optBoolean("result");

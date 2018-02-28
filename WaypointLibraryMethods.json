@@ -1,11 +1,11 @@
 [
     {
-        "method": "saveToFile",
+        "method": "saveToJsonFile",
         "params":[ ],
         "returns": true
     },
     {
-        "method": "restoreFromFile",
+        "method": "resetFromJsonFile",
         "params":[ ],
         "returns": true
     },

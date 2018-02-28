@@ -1,10 +1,16 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <history>
    <processor signature="gcc -L../../../../../usr/local/lib -ljsoncpp -ljsonrpccpp-server -ljsonrpccpp-common -lmicrohttpd -lstdc++ -lm">
-      <target file="waypointRPCServer" lastModified="161d81e2248">
-         <source file="../obj/server/WaypointServer.o" lastModified="161d81e2248"/>
-         <source file="../obj/server/WaypointLibrary.o" lastModified="161d7dfe898"/>
+      <target file="waypointRPCServer" lastModified="161da15f6c0">
+         <source file="../obj/server/WaypointServer.o" lastModified="161da15f6c0"/>
+         <source file="../obj/server/WaypointLibrary.o" lastModified="161da158960"/>
          <source file="../obj/server/Waypoint.o" lastModified="161d81b3830"/>
+      </target>
+   </processor>
+   <processor signature="gcc -L../../../../../usr/local/lib -ljsoncpp -ljsonrpccpp-client -ljsonrpccpp-common -lmicrohttpd -lstdc++ -lfltk -lm">
+      <target file="waypointRPCClient" lastModified="161dab474f8">
+         <source file="../obj/client/Waypoint.o" lastModified="161dab46d28"/>
+         <source file="../obj/client/WaypointClient.o" lastModified="161dab47110"/>
       </target>
    </processor>
 </history>

@@ -104,7 +104,7 @@ class WaypointLibrary{
     * @return True if the waypoints were successfully imported to a JSON file, 
     *          False if not.
     */
-    bool restoreFromFile();
+    bool resetFromJsonFile();
 
     /**
     * Export the current waypoints to a JSON file.
@@ -112,7 +112,7 @@ class WaypointLibrary{
     * @return True if the waypoints were successfully exported to a JSON file, 
     *          False if not.
     */
-    bool saveToFile();
+    bool saveToJsonFile();
 
     string distanceAndBearing(string waypoint1, string waypoint2);
 

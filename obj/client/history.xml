@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<history>
+   <processor signature="gcc noversion nomachine -std=c++14 -c -I../../../../usr/local/include -I../../../../usr/include/jsoncpp">
+      <target file="WaypointClient.o" lastModified="161dab47110">
+         <source file="../../src/cpp/client/WaypointClient.cpp" lastModified="161dab3ec40"/>
+      </target>
+      <target file="Waypoint.o" lastModified="161dab46d28">
+         <source file="../../src/cpp/server/Waypoint.cpp" lastModified="161d81b1508"/>
+      </target>
+      <target file="WaypointLibrary.o" lastModified="161da833f50">
+         <source file="../../src/cpp/server/WaypointLibrary.cpp" lastModified="161da152f88"/>
+      </target>
+   </processor>
+</history>

@@ -167,14 +167,14 @@ bool WaypointLibrary::remove(string name){
 * @return The waypoint that has the name.
 */
 Json::Value  WaypointLibrary::get(string name){
-    Waypoint * toReturn = NULL;
+    Waypoint toReturn;
     for(int i = 0; i < library.size(); i++){
         if(name.compare(library[i].name) == 0){
-            toReturn = &library[i];
-            return toReturn;
+            toReturn = library[i];
         }
     }
-    return toReturn->toJSONObject();
+    std::cout << toReturn.toJSONObject() << endl;
+    return toReturn.toJSONObject();
 }
 
 /**
@@ -183,7 +183,7 @@ Json::Value  WaypointLibrary::get(string name){
 * @return True if the waypoints were successfully imported to a JSON file, 
 *          False if not.
 */
-bool WaypointLibrary::restoreFromFile(){
+bool WaypointLibrary::resetFromJsonFile(){
     bool ret = false;
     this->library.clear();
     std::ifstream infile;
@@ -220,7 +220,7 @@ bool WaypointLibrary::restoreFromFile(){
 * @return True if the waypoints were successfully exported to a JSON file, 
 *          False if not.
 */
-bool WaypointLibrary::saveToFile(){
+bool WaypointLibrary::saveToJsonFile(){
         
         ofstream outfile;
         outfile.open("waypoints.json");

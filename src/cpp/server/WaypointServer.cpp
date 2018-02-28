@@ -43,8 +43,8 @@ class WaypointServer : public waypointserverstub {
 public:
    WaypointServer(AbstractServerConnector &connector, int port);
    virtual std::string serviceInfo();
-   virtual bool saveToFile();
-   virtual bool restoreFromFile();
+   virtual bool saveToJsonFile();
+   virtual bool resetFromJsonFile();
    virtual bool add(const Json::Value& mediaName);
    virtual bool remove(const std::string& mediaName);
    virtual Json::Value get(const std::string& mediaName);
@@ -73,15 +73,15 @@ string WaypointServer::serviceInfo(){
    return  msg.append(ss.str());
 }
 
-bool WaypointServer::saveToFile(){
+bool WaypointServer::saveToJsonFile(){
    cout << "saving collection to waypoints.json" << endl;
-   bool ret = library->saveToFile();
+   bool ret = library->saveToJsonFile();
    return ret;
 }
 
-bool WaypointServer::restoreFromFile(){
+bool WaypointServer::resetFromJsonFile(){
    cout << "restoring collection from waypoints.json" << endl;
-   bool ret = library->restoreFromFile();
+   bool ret = library->resetFromJsonFile();
    return ret;
 }
 
@@ -99,7 +99,9 @@ bool WaypointServer::remove(const string& aWaypoint) {
 
 Json::Value WaypointServer::get(const string& aWaypoint){
    cout << "Getting " << aWaypoint << endl;
-   return library->get(aWaypoint);
+   Json::Value toReturn = library->get(aWaypoint);
+   cout << toReturn<< endl;
+   return toReturn;
 }
 
 Json::Value WaypointServer::getNames(){

@@ -12,8 +12,8 @@ class waypointserverstub : public jsonrpc::AbstractServer<waypointserverstub>
     public:
         waypointserverstub(jsonrpc::AbstractServerConnector &conn, jsonrpc::serverVersion_t type = jsonrpc::JSONRPC_SERVER_V2) : jsonrpc::AbstractServer<waypointserverstub>(conn, type)
         {
-            this->bindAndAddMethod(jsonrpc::Procedure("saveToFile", jsonrpc::PARAMS_BY_POSITION, jsonrpc::JSON_BOOLEAN,  NULL), &waypointserverstub::saveToFileI);
-            this->bindAndAddMethod(jsonrpc::Procedure("restoreFromFile", jsonrpc::PARAMS_BY_POSITION, jsonrpc::JSON_BOOLEAN,  NULL), &waypointserverstub::restoreFromFileI);
+            this->bindAndAddMethod(jsonrpc::Procedure("saveToJsonFile", jsonrpc::PARAMS_BY_POSITION, jsonrpc::JSON_BOOLEAN,  NULL), &waypointserverstub::saveToJsonFileI);
+            this->bindAndAddMethod(jsonrpc::Procedure("resetFromJsonFile", jsonrpc::PARAMS_BY_POSITION, jsonrpc::JSON_BOOLEAN,  NULL), &waypointserverstub::resetFromJsonFileI);
             this->bindAndAddMethod(jsonrpc::Procedure("add", jsonrpc::PARAMS_BY_POSITION, jsonrpc::JSON_BOOLEAN, "param1",jsonrpc::JSON_OBJECT, NULL), &waypointserverstub::addI);
             this->bindAndAddMethod(jsonrpc::Procedure("remove", jsonrpc::PARAMS_BY_POSITION, jsonrpc::JSON_BOOLEAN, "param1",jsonrpc::JSON_STRING, NULL), &waypointserverstub::removeI);
             this->bindAndAddMethod(jsonrpc::Procedure("get", jsonrpc::PARAMS_BY_POSITION, jsonrpc::JSON_OBJECT, "param1",jsonrpc::JSON_STRING, NULL), &waypointserverstub::getI);
@@ -23,15 +23,15 @@ class waypointserverstub : public jsonrpc::AbstractServer<waypointserverstub>
             this->bindAndAddMethod(jsonrpc::Procedure("addNew", jsonrpc::PARAMS_BY_POSITION, jsonrpc::JSON_BOOLEAN, "param1",jsonrpc::JSON_STRING,"param2",jsonrpc::JSON_STRING,"param3",jsonrpc::JSON_STRING,"param4",jsonrpc::JSON_STRING,"param5",jsonrpc::JSON_STRING, NULL), &waypointserverstub::addNewI);
         }
 
-        inline virtual void saveToFileI(const Json::Value &request, Json::Value &response)
+        inline virtual void saveToJsonFileI(const Json::Value &request, Json::Value &response)
         {
             (void)request;
-            response = this->saveToFile();
+            response = this->saveToJsonFile();
         }
-        inline virtual void restoreFromFileI(const Json::Value &request, Json::Value &response)
+        inline virtual void resetFromJsonFileI(const Json::Value &request, Json::Value &response)
         {
             (void)request;
-            response = this->restoreFromFile();
+            response = this->resetFromJsonFile();
         }
         inline virtual void addI(const Json::Value &request, Json::Value &response)
         {
@@ -62,8 +62,8 @@ class waypointserverstub : public jsonrpc::AbstractServer<waypointserverstub>
         {
             response = this->addNew(request[0u].asString(), request[1u].asString(), request[2u].asString(), request[3u].asString(), request[4u].asString());
         }
-        virtual bool saveToFile() = 0;
-        virtual bool restoreFromFile() = 0;
+        virtual bool saveToJsonFile() = 0;
+        virtual bool resetFromJsonFile() = 0;
         virtual bool add(const Json::Value& param1) = 0;
         virtual bool remove(const std::string& param1) = 0;
         virtual Json::Value get(const std::string& param1) = 0;

@@ -1,5 +1,6 @@
 #include "WaypointGUI.cpp"
-#include "WaypointLibrary.hpp"
+#include "waypointlibrarystub.h"
+#include "../server/WaypointLibrary.hpp"
 
 #include <FL/Fl.H>
 #include <FL/Fl_Window.H>
@@ -11,11 +12,16 @@
 #include <FL/Fl_Multiline_Input.H>
 #include <stdio.h>
 #include <iostream>
+#include <sstream>
+#include <iomanip> 
 #include <stdlib.h>
 #include <vector>
 #include <string>
+#include <jsonrpccpp/client/connectors/httpclient.h>
 
+using namespace jsonrpc;
 using namespace std;
+
 
 /**
  * Copyright (c) 2018 Tim Lindquist,
@@ -51,7 +57,8 @@ using namespace std;
  **/
 class WaypointClient : public WaypointGUI {
 
-   WaypointLibrary * library;
+   waypointlibrarystub * library;
+   HttpClient * httpclient;
 
    /** ClickedX is one of the callbacks for GUI controls.
     * Callbacks need to be static functions. But, static functions
@@ -154,7 +161,7 @@ class WaypointClient : public WaypointGUI {
    static void ClickedSave(Fl_Widget * w, void * userdata) {
       WaypointClient* anInstance = (WaypointClient*)userdata;
       
-      anInstance->library->saveToFile();
+      anInstance->library->saveToJsonFile();
       
   }
 
@@ -165,23 +172,24 @@ class WaypointClient : public WaypointGUI {
       std::cout << "You clicked the restore button"
                 << std::endl;
       
-      anInstance->library->restoreFromFile();
-      
-      vector<string> names = anInstance->library->getNames();
-      for(vector<string>::iterator i= names.begin(); i != names.end(); i++){
+      anInstance->library->resetFromJsonFile();
+      std::cout << "Tried to send restore from file request"
+                << std::endl;
+      Json::Value names = anInstance->library->getNames();
+      for(Json::Value::iterator i= names.begin(); i != names.end(); i++){
         int size = theWPChoice->menubutton()->size();
         bool alreadyIn = false;
         for (int j=0; j < size-1; j++ ) {
           const Fl_Menu_Item &item = theWPChoice->menubutton()->menu()[j];
-          if(!(*i).compare(item.label())){
+          if(!(*i).asString().compare(item.label())){
             alreadyIn = true;
             break;
           }
 
         }
         if(!alreadyIn){
-          anInstance->frWps->add((*i).c_str());
-          anInstance->toWps->add((*i).c_str()); 
+          anInstance->frWps->add((*i).asString().c_str());
+          anInstance->toWps->add((*i).asString().c_str()); 
         }
               
       }
@@ -195,7 +203,33 @@ class WaypointClient : public WaypointGUI {
    static void SelectedFromWP(Fl_Widget * w, void * userdata) {
       WaypointClient* anInstance = (WaypointClient*)userdata;
       Fl_Input_Choice * frWps = anInstance->frWps;
+      Fl_Input * theLat = anInstance->latIn;
+      Fl_Input * theLon = anInstance->lonIn;
+      Fl_Input * theEle = anInstance->eleIn;
+      Fl_Input * theName = anInstance->nameIn;
+      Fl_Input * theAddress = anInstance->addrIn;
       std::string selected(frWps->value());
+      Json::Value waypoint = anInstance->library->get(selected);
+      Waypoint temp(waypoint);
+      stringstream latStream;
+      stringstream lonStream;
+      stringstream eleStream;
+      latStream << fixed << setprecision(2) << temp.lat;
+      lonStream << fixed << setprecision(2) << temp.lon;
+      eleStream << fixed << setprecision(2) << temp.ele;
+
+
+      std::string latitude = latStream.str();
+      std::string longitude = lonStream.str();
+      std::string elevation = eleStream.str();
+      std::string name = temp.name;
+      std::string address = temp.address;
+
+      theLat->value(latitude.c_str());
+      theLon->value(longitude.c_str());
+      theEle->value(elevation.c_str());
+      theName->value(name.c_str());
+      theAddress->value(address.c_str());
       std::cout << "You changed the selection in the Fl_Input_Choice from to the value "
                 << selected
                 << std::endl;
@@ -219,12 +253,13 @@ class WaypointClient : public WaypointGUI {
    }
 
 public:
-   WaypointClient(const char * name = 0) : WaypointGUI(name) {
-      library = new WaypointLibrary("waypoints.json");
-      vector<string> names = library->getNames();
-      for(vector<string>::iterator i= names.begin(); i != names.end(); i++){
-        this->frWps->add((*i).c_str());
-        this->toWps->add((*i).c_str());        
+   WaypointClient(const char * name = 0, string host= "http://127.0.0.1:8080") : WaypointGUI(name) {
+      httpclient = new HttpClient(host);
+      library = new waypointlibrarystub(*httpclient);
+      Json::Value names = library->getNames();
+      for(Json::Value::iterator i= names.begin(); i != names.end(); i++){
+        this->frWps->add((*i).asString().c_str());
+        this->toWps->add((*i).asString().c_str());        
       }
       removeWPButt->callback(ClickedRemoveWP, (void*)this);
       modWPButt->callback(ClickedModWP, (void*)this);
@@ -238,10 +273,15 @@ public:
 
    ~WaypointClient() {
       delete(library);
+      delete(httpclient);
    }
 };
 
-int main() {
-   WaypointClient cm("Jean Torres's Waypoint Browser");
+int main(int argc, char*argv[]) {
+  string host = "http://127.0.0.1:8080";
+   if(argc>1){
+      host = string(argv[1]);
+   }
+   WaypointClient cm("Jean Torres's Waypoint Browser",host);
    return (Fl::run());
 }

@@ -111,7 +111,7 @@ public class WaypointClient extends WaypointGUI implements
 
    public void actionPerformed(ActionEvent e) {
       if(e.getActionCommand().equals("Remove")) {
-         debug("you clicked Remove Waypoint");
+         debug("you clicked Remove Waypoint " + ((String)frWps.getSelectedItem()));
          waypoints.remove((String)frWps.getSelectedItem());
          toWps.removeItem(frWps.getSelectedItem());
          frWps.removeItem(frWps.getSelectedItem());
@@ -131,7 +131,7 @@ public class WaypointClient extends WaypointGUI implements
          debug("you clicked Modify Waypoint");
       }else if(e.getActionCommand().equals("Import")) {
          debug("you clicked Import Json Library");
-         this.waypoints.restoreFromFile();
+         waypoints.restoreFromFile();
       }else if(e.getActionCommand().equals("Export")) {
          debug("you clicked Export Json Library");
          this.waypoints.saveToFile();
